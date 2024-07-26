@@ -6,7 +6,7 @@ local suits = nil
 local ranks = nil
 local saveStateKeys = {"1", "2", "3"}
 local consoleOpen = false
-local showNewLogs = true
+local showNewLogs = false
 local firstConsoleRender
 local old_print = print
 local logs = nil
