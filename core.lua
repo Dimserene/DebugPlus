@@ -334,7 +334,11 @@ function global.handleKeys(controller, key, dt)
             G.P_BLINDS[_blind.key].unlocked = true
             G.P_BLINDS[_blind.key].discovered = true
             G.P_BLINDS[_blind.key].alerted = true
-            _element:set_sprite_pos(_blind.pos)
+            if _element.set_sprite_pos then -- vanilla
+                _element:set_sprite_pos(_blind.pos)
+            else -- SMODS
+                _element.children.center:set_sprite_pos(_blind.pos)
+            end
             set_discover_tallies()
             G:save_progress()
         end
@@ -421,6 +425,30 @@ function global.registerButtons()
         if G.STAGE == G.STAGES.RUN then
             add_tag(Tag('tag_double', false, 'Big'))
         end
+    end
+end
+
+function global.togglePerfUI()
+    if G.F_ENABLE_PERF_OVERLAY == G.SETTINGS.perf_mode then -- first time run
+        G.SETTINGS.perf_mode = true
+    end
+    G.F_ENABLE_PERF_OVERLAY = G.SETTINGS.perf_mode
+    if G.F_ENABLE_PERF_OVERLAY then
+        if not silent then
+            log("Enabled profiler overlay. Press 'p' again to disable it.")
+        end
+    else
+        if not silent then
+            log("Disabled profiler overlay.")
+        end
+    end
+end
+
+function global.profileMessage()
+    if G.prof then
+        log("Enabled performance profiler. Press 'v' again to disable it.")
+    else
+        log("Disabled performance profiler. Check console for results.")
     end
 end
 
